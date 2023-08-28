@@ -1,4 +1,4 @@
-/* Hello Triangle - código adaptado de https://learnopengl.com/#!Getting-started/Hello-Triangle 
+/* Hello Triangle - código adaptado de https://learnopengl.com/#!Getting-started/Hello-Triangle
  *
  * Adaptado por Rossana Baptista Queiroz
  * para a disciplina de Processamento Gráfico - Unisinos
@@ -27,7 +27,7 @@ using namespace std;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // Protótipos das funções
-int setupShader();
+//int setupShader();
 int setupGeometry();
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
@@ -99,16 +99,16 @@ int main()
 	// Compilando e buildando o programa de shader
 	//GLuint shaderID = setupShader();
 	Shader shader("../Shaders/helloTriangle.vs", "../Shaders/helloTriangle.fs");
-	
+
 	// Gerando um buffer simples, com a geometria de um triângulo
 	GLuint VAO = setupGeometry();
-	
+
 
 	// Enviando a cor desejada (vec4) para o fragment shader
 	// Utilizamos a variáveis do tipo uniform em GLSL para armazenar esse tipo de info
 	// que não está nos buffers
 	GLint colorLoc = glGetUniformLocation(shader.ID, "inputColor");
-	
+
 	//glUseProgram(shader.ID);
 	shader.Use();
 
@@ -129,9 +129,7 @@ int main()
 
 		glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
 
-		// Chamada de desenho - drawcall
-		// Poligono Preenchido - GL_TRIANGLES
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
@@ -215,10 +213,27 @@ int setupGeometry()
 	// Pode ser arazenado em um VBO único ou em VBOs separados
 	GLfloat vertices[] = {
 		//x   y     z
-		-0.5, -0.5, 0.0, //v0
-		 0.5, -0.5, 0.0, //v1
- 		 0.0,  0.5, 0.0, //v2 
+		-0.5, 0.5, 0.0,
+		0.5,  0.5, 0.0,
+		0.0,  0.0, 0.0,
+		//outro triangulo vai aqui
+		   0.0,  0.0,  0.0,
+		  -0.5, -0.5,  0.0,
+		   0.5, -0.5,  0.0
 	};
+
+	//GLfloat vertices[] = {
+	//	//x   y     z
+	//	-0.5, 0.5, 0.0,
+	//	0.5,  0.5, 0.0,
+	//	0.5,  -0.5, 0.0,
+	//	-0.5,  -0.5, 0.0,
+	//	//0.0,  0.0, 0.0,
+	//	//outro triangulo vai aqui
+	//	  /* 0.0,  0.0,  0.0,
+	//	  -0.5, -0.5,  0.0,
+	//	   0.5, -0.5,  0.0*/
+	//};
 
 	GLuint VBO, VAO;
 	//Geração do identificador do VBO
@@ -245,10 +260,10 @@ int setupGeometry()
 
 	// Observe que isso é permitido, a chamada para glVertexAttribPointer registrou o VBO como o objeto de buffer de vértice 
 	// atualmente vinculado - para que depois possamos desvincular com segurança
-	glBindBuffer(GL_ARRAY_BUFFER, 0); 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	// Desvincula o VAO (é uma boa prática desvincular qualquer buffer ou array para evitar bugs medonhos)
-	glBindVertexArray(0); 
+	glBindVertexArray(0);
 
 	return VAO;
 }
