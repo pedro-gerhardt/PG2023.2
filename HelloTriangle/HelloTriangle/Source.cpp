@@ -131,7 +131,7 @@ int main()
 
 		shader.setVec4("inputColor", 0.0f, 0.0f, 1.0f, 1.0f);
 
-		glDrawArrays(GL_LINE_LOOP, 0, 6);
+		glDrawArrays(GL_POINTS, 0, 6);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
