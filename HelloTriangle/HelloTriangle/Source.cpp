@@ -107,7 +107,7 @@ int main()
 	// Enviando a cor desejada (vec4) para o fragment shader
 	// Utilizamos a variáveis do tipo uniform em GLSL para armazenar esse tipo de info
 	// que não está nos buffers
-	GLint colorLoc = glGetUniformLocation(shader.ID, "inputColor");
+	//GLint colorLoc = glGetUniformLocation(shader.ID, "inputColor");
 
 	//glUseProgram(shader.ID);
 	shader.Use();
@@ -127,9 +127,11 @@ int main()
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-		glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
+		//glUniform4f(colorLoc, 0.0f, 0.0f, 1.0f, 1.0f); //enviando cor para variável uniform inputColor
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		shader.setVec4("inputColor", 0.0f, 0.0f, 1.0f, 1.0f);
+
+		glDrawArrays(GL_LINE_LOOP, 0, 6);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
