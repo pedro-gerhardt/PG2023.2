@@ -36,17 +36,19 @@ int setupGeometry();
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 600, HEIGHT = 600;
 
-void buildCircle(float radius, int vCount, std::vector<glm::vec3> *vertices)
+void buildCircle(float radius, float anguloBase, int vCount, std::vector<glm::vec3> *vertices)
 {
-	float angle = 360.0f / vCount;
+	float angle = anguloBase / vCount;
 
 	int triangleCount = vCount - 2;
 
 	std::vector<glm::vec3> temp;
+
+	temp.push_back(glm::vec3(0, 0, 0));
 	// positions
 	for (int i = 0; i < vCount; i++)
 	{
-		float currentAngle = angle * i;
+		float currentAngle = (angle * i) + 60.0f;
 		float x = radius * cos(glm::radians(currentAngle));
 		float y = radius * sin(glm::radians(currentAngle));
 		float z = 0.0f;
@@ -135,8 +137,10 @@ int main()
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> vertices2;
-	buildCircle(1, 36, &vertices);
-	buildCircle(1, 5, &vertices2);
+	float anguloBase = 270.0f;
+
+	buildCircle(1, anguloBase, 36, &vertices);
+	buildCircle(1, anguloBase, 5, &vertices2);
 	GLuint VAOCircle = setupCircle(vertices);
 	GLuint VAOCircle2 = setupCircle(vertices2);
 
@@ -188,9 +192,9 @@ int main()
 		//glClear(GL_COLOR_BUFFER_BIT);
 		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f); //enviando cor para variável uniform inputColor
 
-		glBindVertexArray(VAOCircle2);
+		glBindVertexArray(VAOCircle);
 
-		glDrawArrays(GL_TRIANGLES, 0, vertices2.size()); // asd
+		glDrawArrays(GL_TRIANGLE_FAN, 0, vertices.size()); // asd
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 		// Troca os buffers da tela
