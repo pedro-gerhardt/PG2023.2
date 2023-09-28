@@ -136,7 +136,7 @@ int main()
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> vertices2;
 	buildCircle(1, 36, &vertices);
-	buildCircle(1, 8, &vertices2);
+	buildCircle(1, 5, &vertices2);
 	GLuint VAOCircle = setupCircle(vertices);
 	GLuint VAOCircle2 = setupCircle(vertices2);
 
