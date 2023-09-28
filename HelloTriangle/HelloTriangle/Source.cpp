@@ -40,15 +40,14 @@ void buildCircle(float radius, float anguloBase, int vCount, std::vector<glm::ve
 {
 	float angle = anguloBase / vCount;
 
-	int triangleCount = vCount - 2;
+	int triangleCount = vCount;
 
 	std::vector<glm::vec3> temp;
 
-	temp.push_back(glm::vec3(0, 0, 0));
 	// positions
 	for (int i = 0; i < vCount; i++)
 	{
-		float currentAngle = (angle * i) + 60.0f;
+		float currentAngle = angle * i;
 		float x = radius * cos(glm::radians(currentAngle));
 		float y = radius * sin(glm::radians(currentAngle));
 		float z = 0.0f;
@@ -58,9 +57,11 @@ void buildCircle(float radius, float anguloBase, int vCount, std::vector<glm::ve
 
 	for (int i = 0; i < triangleCount; i++)
 	{
-		vertices->push_back(temp[0]);
-		vertices->push_back(temp[i + 1]);
-		vertices->push_back(temp[i + 2]);
+		vertices->push_back(temp[i]);
+		int j = i + 2;
+		if (j >= triangleCount)
+			j = j - triangleCount;
+		vertices->push_back(temp[j]);
 	}
 }
 
@@ -134,13 +135,13 @@ int main()
 	// Gerando um buffer simples, com a geometria de um triângulo
 	GLuint VAO = setupGeometry();
 
-	std::vector<glm::vec3> vertices;
+	//std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> vertices2;
-	float anguloBase = 60.0f;
+	float anguloBase = 360.0f;
 
-	buildCircle(1, anguloBase, 36, &vertices);
-	buildCircle(1, anguloBase, 5, &vertices2);
-	GLuint VAOCircle = setupCircle(vertices);
+	//buildCircle(1, anguloBase, 36, &vertices);
+	buildCircle(1, anguloBase, 7, &vertices2);
+	//GLuint VAOCircle = setupCircle(vertices);
 	GLuint VAOCircle2 = setupCircle(vertices2);
 
 
@@ -191,9 +192,9 @@ int main()
 		//glClear(GL_COLOR_BUFFER_BIT);
 		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f); //enviando cor para variável uniform inputColor
 
-		glBindVertexArray(VAOCircle);
+		glBindVertexArray(VAOCircle2);
 
-		glDrawArrays(GL_TRIANGLE_FAN, 0, vertices.size()); // asd
+		glDrawArrays(GL_LINES, 0, vertices2.size()); // asd
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 		// Troca os buffers da tela
