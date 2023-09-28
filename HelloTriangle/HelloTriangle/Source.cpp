@@ -65,7 +65,6 @@ void buildCircle(float radius, float anguloBase, int vCount, std::vector<glm::ve
 }
 
 
-
 int setupCircle(std::vector<glm::vec3> vertices) {
 	GLuint vertexBuffer;
 	GLuint vertexArray;
@@ -137,7 +136,7 @@ int main()
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> vertices2;
-	float anguloBase = 270.0f;
+	float anguloBase = 60.0f;
 
 	buildCircle(1, anguloBase, 36, &vertices);
 	buildCircle(1, anguloBase, 5, &vertices2);
