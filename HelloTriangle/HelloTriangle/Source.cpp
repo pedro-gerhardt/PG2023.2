@@ -36,29 +36,41 @@ int setupGeometry();
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 600, HEIGHT = 600;
 
-void buildCircle(float radius, int vCount, std::vector<glm::vec3> *vertices)
+void buildCircle(float radius, float vCount, std::vector<glm::vec3> *vertices)
 {
+	float radiusSpiral = 0.0f;
 	float angle = 360.0f / vCount;
 
-	int triangleCount = vCount - 2;
+	int triangleCount = vCount;
 
 	std::vector<glm::vec3> temp;
 	// positions
 	for (int i = 0; i < vCount; i++)
 	{
 		float currentAngle = angle * i;
-		float x = radius * cos(glm::radians(currentAngle));
-		float y = radius * sin(glm::radians(currentAngle));
+		float x = radiusSpiral * cos(glm::radians(currentAngle));
+		float y = radiusSpiral * sin(glm::radians(currentAngle));
 		float z = 0.0f;
 
 		temp.push_back(glm::vec3(x, y, z));
+		radiusSpiral += 1/vCount;
 	}
 
 	for (int i = 0; i < triangleCount; i++)
 	{
-		vertices->push_back(temp[0]);
-		vertices->push_back(temp[i + 1]);
-		vertices->push_back(temp[i + 2]);
+		vertices->push_back(temp[i]);
+	}
+}
+
+void buildSpiral(int vCount, std::vector<glm::vec3>* vertices) {
+	float x = 0.0f, y = 0.0f, angle = 0.0f, b = 0.001f;
+	for (int i = 0; i < vCount; i++)
+	{
+		angle = 0.1 * i;
+		x = (b * angle) * cos(glm::radians(angle));
+		y = (b * angle) * sin(glm::radians(angle));
+
+		vertices->push_back(glm::vec3(x, y, 0.0f));
 	}
 }
 
@@ -134,11 +146,12 @@ int main()
 	GLuint VAO = setupGeometry();
 
 	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec3> vertices2;
-	buildCircle(1, 36, &vertices);
-	buildCircle(1, 8, &vertices2);
+	//std::vector<glm::vec3> vertices2;
+	//buildCircle(1, 5000.0f, &vertices);
+	buildSpiral(10000, &vertices);
+	//buildCircle(1, 8, &vertices2);
 	GLuint VAOCircle = setupCircle(vertices);
-	GLuint VAOCircle2 = setupCircle(vertices2);
+	//GLuint VAOCircle2 = setupCircle(vertices2);
 
 
 	// Enviando a cor desejada (vec4) para o fragment shader
@@ -161,7 +174,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glLineWidth(10);
-		glPointSize(20);
+		glPointSize(4);
 
 		//glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
@@ -188,9 +201,9 @@ int main()
 		//glClear(GL_COLOR_BUFFER_BIT);
 		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f); //enviando cor para variável uniform inputColor
 
-		glBindVertexArray(VAOCircle2);
+		glBindVertexArray(VAOCircle);
 
-		glDrawArrays(GL_TRIANGLES, 0, vertices2.size()); // asd
+		glDrawArrays(GL_POINTS, 0, vertices.size()); // asd
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 		// Troca os buffers da tela
