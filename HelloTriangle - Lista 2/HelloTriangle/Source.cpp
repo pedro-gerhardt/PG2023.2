@@ -61,8 +61,6 @@ int main()
 
 	// Definindo as dimensões da viewport com as mesmas dimensões da janela da aplicação
 	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
 
 
 	// Compilando e buildando o programa de shader
@@ -85,25 +83,24 @@ int main()
 		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
 		glfwPollEvents();
 
+		glfwGetFramebufferSize(window, &width, &height);
+		glViewport(width / 2, height / 2, width / 2, height / 2);
 		// Limpa o buffer de cor
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); //cor de fundo
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glLineWidth(5);
-		glPointSize(20);
+		glPointSize(10);
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-
 		glm::mat4 model = glm::mat4(1); //matriz identidade
 		model = glm::translate(model, glm::vec3(400.0, 300.0, 0.0));
-		model = glm::scale(model, glm::vec3(400.0, 300.0, 1.0));
+		model = glm::scale(model, glm::vec3(300.0, 225.0, 1.0));
 		shader.setMat4("model", glm::value_ptr(model));
 
 		glDrawArrays(GL_TRIANGLES, 30, 15);
 		glDrawArrays(GL_LINES, 0, 30);
-		//glDrawArrays(GL_TRIANGLES, 4, 6);
-		//glDrawArrays(GL_POINTS, 3, 3);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
