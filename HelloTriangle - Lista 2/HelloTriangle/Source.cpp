@@ -74,7 +74,7 @@ int main()
 
 	glm::mat4 projection = glm::mat4(1); //matriz identidade
 
-	projection = glm::ortho(-10.0, 10.0, -10.0, 10.0, -1.0, 1.0);
+	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	shader.Use();
 	shader.setMat4("projection", glm::value_ptr(projection));
@@ -93,6 +93,12 @@ int main()
 		glPointSize(20);
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
+
+
+		glm::mat4 model = glm::mat4(1); //matriz identidade
+		model = glm::translate(model, glm::vec3(400.0, 300.0, 0.0));
+		model = glm::scale(model, glm::vec3(400.0, 300.0, 1.0));
+		shader.setMat4("model", glm::value_ptr(model));
 
 		glDrawArrays(GL_TRIANGLES, 30, 15);
 		glDrawArrays(GL_LINES, 0, 30);
@@ -194,7 +200,6 @@ int setupGeometry()
 		-0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
 		-0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
 		0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
-
 	};
 
 	GLuint VBO, VAO;
