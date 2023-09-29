@@ -92,16 +92,18 @@ int main()
 		glfwPollEvents();
 
 		// Limpa o buffer de cor
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //cor de fundo
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); //cor de fundo
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glLineWidth(10);
+		glLineWidth(5);
 		glPointSize(20);
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-		glDrawArrays(GL_LINE_LOOP, 0, 3);
-		glDrawArrays(GL_POINTS, 3, 3);
+		glDrawArrays(GL_TRIANGLES, 30, 15);
+		glDrawArrays(GL_LINES, 0, 30);
+		//glDrawArrays(GL_TRIANGLES, 4, 6);
+		//glDrawArrays(GL_POINTS, 3, 3);
 
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
@@ -127,19 +129,84 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int setupGeometry()
 {
 	GLfloat vertices[] = {
-		0.0,  0.6, 0.0, 0.0, 0.0, 1.0,
-		-0.6, -0.5, 0.0, 0.0, 0.0, 1.0,
-		0.6,  -0.3, 0.0, 0.0, 0.0, 1.0,
+		// chao laranja - 2 pontos
+		-1.0, -1.0, 0.0, 1.0, 0.2734, 0.0,
+		1.0, -1.0, 0.0, 1.0, 0.2734, 0.0,
 
-		0.0,  0.6, 0.0, 1.0, 0.0, 0.0,
-		-0.6, -0.5, 0.0, 0.0, 1.0, 0.0,
-		0.6,  -0.3, 0.0, 0.0, 0.0, 1.0,
+		// estrutura casa linhas pretas - 10 pontos
+		-0.75, -1.0, 0.0, 0.0, 0.0, 0.0,
+		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+
+		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+		0.0, 0.75, 0.0, 0.0, 0.0, 0.0,
+
+		0.0, 0.75, 0.0, 0.0, 0.0, 0.0,
+		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+
+		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+
+		0.75, -1.0, 0.0, 0.0, 0.0, 0.0,
+		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
+
+		// linhas porta - 6 pontos
+		0.2, -1.0, 0.0, 0.0, 0.0, 0.0,
+		0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
+
+		-0.2, -1.0, 0.0, 0.0, 0.0, 0.0,
+		-0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
+
+		 0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
+		-0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
+
+		//linhas janela - 12 pontos
+		-0.1, -0.35, 0.0, 0.0, 0.0, 0.0,
+		-0.1, -0.15, 0.0, 0.0, 0.0, 0.0,
+
+		-0.3, -0.35, 0.0, 0.0, 0.0, 0.0,
+		-0.3, -0.15, 0.0, 0.0, 0.0, 0.0,
+
+		-0.3, -0.35, 0.0, 0.0, 0.0, 0.0,
+		-0.1, -0.35, 0.0, 0.0, 0.0, 0.0,
+
+		-0.3, -0.15, 0.0, 0.0, 0.0, 0.0,
+		-0.1, -0.15, 0.0, 0.0, 0.0, 0.0,
+
+		-0.3, -0.25, 0.0, 0.0, 0.0, 0.0,
+		-0.1, -0.25, 0.0, 0.0, 0.0, 0.0,
+
+		-0.2, -0.35, 0.0, 0.0, 0.0, 0.0,
+		-0.2, -0.15, 0.0, 0.0, 0.0, 0.0,
+
+		// telhado vermelho - 3 pontos
+		-0.75, 0.0, 0.0, 1.0, 0.0, 0.0,
+		0.0, 0.75, 0.0, 1.0, 0.0, 0.0,
+		0.75, 0.0, 0.0, 1.0, 0.0, 0.0,
+
+		// janela amarela - 6 pontos
+		-0.1, -0.35, 0.0, 1.0, 1.0, 0.0,
+		-0.1, -0.15, 0.0, 1.0, 1.0, 0.0,
+		-0.3, -0.35, 0.0, 1.0, 1.0, 0.0,
+
+		-0.1, -0.15, 0.0, 1.0, 1.0, 0.0,
+		-0.3, -0.35, 0.0, 1.0, 1.0, 0.0,
+		-0.3, -0.15, 0.0, 1.0, 1.0, 0.0,
+
+		// porta marrom - 6 pontos
+		0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
+		0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
+		-0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
+
+		-0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
+		-0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
+		0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
+
 	};
 
 	GLuint VBO, VAO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); //Faz a conexão (vincula) do buffer como um buffer de array
-	glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(GLfloat), vertices, GL_STATIC_DRAW); //Envia os dados do array de floats para o buffer da OpenGl
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //Envia os dados do array de floats para o buffer da OpenGl
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
