@@ -20,6 +20,7 @@ int setupGeometry();
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 800, HEIGHT = 600;
+glm::mat4 model = glm::mat4(1); //matriz identidade
 
 // Função MAIN
 int main()
@@ -76,6 +77,9 @@ int main()
 	shader.Use();
 	shader.setMat4("projection", glm::value_ptr(projection));
 
+	model = glm::translate(model, glm::vec3(400.0, 300.0, 0.0));
+	model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
+
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
 	{
@@ -93,31 +97,8 @@ int main()
 		glPointSize(10);
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
-		glm::mat4 model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(400.0, 300.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
 		shader.setMat4("model", glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 30, 15);
-		glDrawArrays(GL_LINES, 0, 30);
 
-		glBindVertexArray(0); //Desconectando o buffer de geometria
-		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
-		model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(200.0, 100.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
-		shader.setMat4("model", glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 30, 15);
-		glDrawArrays(GL_LINES, 0, 30);
-
-		glBindVertexArray(0); //Desconectando o buffer de geometria
-		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
-		model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(600.0, 500.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
-		shader.setMat4("model", glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 30, 15);
 		glDrawArrays(GL_LINES, 0, 30);
 
@@ -140,6 +121,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+
+	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
+		model = glm::translate(model, glm::vec3(-1.0, 0.0, 0.0));
+	if ((key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) && action == GLFW_PRESS)
+		model = glm::translate(model, glm::vec3(1.0, 0.0, 0.0));
+	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
+		model = glm::translate(model, glm::vec3(0.0, 1.0, 0.0));
+	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
+		model = glm::translate(model, glm::vec3(0.0, -1.0, 0.0));
 }
 
 int setupGeometry()
