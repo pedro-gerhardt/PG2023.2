@@ -19,7 +19,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int setupGeometry();
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 600, HEIGHT = 600;
 
 // Função MAIN
 int main()
@@ -70,11 +70,20 @@ int main()
 	GLuint VAO = setupGeometry();
 
 	glm::mat4 projection = glm::mat4(1); //matriz identidade
-
 	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	shader.Use();
 	shader.setMat4("projection", glm::value_ptr(projection));
+
+	glm::vec4 colors[] = {
+		glm::vec4(0.0, 0.0, 1.0, 1.0),
+		glm::vec4(0.0, 1.0, 1.0, 1.0),
+		glm::vec4(0.0, 1.0, 0.0, 1.0),
+		glm::vec4(1.0, 1.0, 0.0, 1.0),
+		glm::vec4(1.0, 0.0, 0.0, 1.0),
+		glm::vec4(1.0, 0.0, 1.0, 1.0),
+	};
+
 
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
@@ -92,36 +101,23 @@ int main()
 		glLineWidth(5);
 		glPointSize(10);
 
-		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
 		glm::mat4 model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(400.0, 300.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
-		shader.setMat4("model", glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 30, 15);
-		glDrawArrays(GL_LINES, 0, 30);
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				glBindVertexArray(VAO); //Conectando ao buffer de geometria
+				model = glm::mat4(1);
+				model = glm::translate(model, glm::vec3(100.0 * j, 100.0 * i, 0.0));
+				model = glm::scale(model, glm::vec3(100.0, 100.0, 1.0));
 
-		glBindVertexArray(0); //Desconectando o buffer de geometria
-		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
-		model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(200.0, 100.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
-		shader.setMat4("model", glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 30, 15);
-		glDrawArrays(GL_LINES, 0, 30);
-
-		glBindVertexArray(0); //Desconectando o buffer de geometria
-		glBindVertexArray(VAO); //Conectando ao buffer de geometria
-
-		model = glm::mat4(1); //matriz identidade
-		model = glm::translate(model, glm::vec3(600.0, 500.0, 0.0));
-		model = glm::scale(model, glm::vec3(100.0, 75.0, 1.0));
-		shader.setMat4("model", glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 30, 15);
-		glDrawArrays(GL_LINES, 0, 30);
-
-		glBindVertexArray(0); //Desconectando o buffer de geometria
+				shader.setMat4("model", glm::value_ptr(model));
+				int idxColor = j - i;
+				if (idxColor < 0)
+					idxColor = 6 + idxColor;
+				shader.setVec4("inputColor", colors[idxColor].r, colors[idxColor].g, colors[idxColor].b, colors[idxColor].a);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+				glBindVertexArray(0); //Desconectando o buffer de geometria
+			}
+		}
 
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
@@ -145,77 +141,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int setupGeometry()
 {
 	GLfloat vertices[] = {
-		// chao laranja - 2 pontos
-		-1.0, -1.0, 0.0, 1.0, 0.2734, 0.0,
-		1.0, -1.0, 0.0, 1.0, 0.2734, 0.0,
+		0.0, 0.0, 0.0, 
+		1.0, 0.0, 0.0, 
+		0.0, 1.0, 0.0, 
 
-		// estrutura casa linhas pretas - 10 pontos
-		-0.75, -1.0, 0.0, 0.0, 0.0, 0.0,
-		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-		0.0, 0.75, 0.0, 0.0, 0.0, 0.0,
-
-		0.0, 0.75, 0.0, 0.0, 0.0, 0.0,
-		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		-0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		0.75, -1.0, 0.0, 0.0, 0.0, 0.0,
-		0.75, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		// linhas porta - 6 pontos
-		0.2, -1.0, 0.0, 0.0, 0.0, 0.0,
-		0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
-
-		-0.2, -1.0, 0.0, 0.0, 0.0, 0.0,
-		-0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
-
-		 0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
-		-0.2, -0.5, 0.0, 0.0, 0.0, 0.0,
-
-		//linhas janela - 12 pontos
-		-0.1, -0.35, 0.0, 0.0, 0.0, 0.0,
-		-0.1, -0.15, 0.0, 0.0, 0.0, 0.0,
-
-		-0.3, -0.35, 0.0, 0.0, 0.0, 0.0,
-		-0.3, -0.15, 0.0, 0.0, 0.0, 0.0,
-
-		-0.3, -0.35, 0.0, 0.0, 0.0, 0.0,
-		-0.1, -0.35, 0.0, 0.0, 0.0, 0.0,
-
-		-0.3, -0.15, 0.0, 0.0, 0.0, 0.0,
-		-0.1, -0.15, 0.0, 0.0, 0.0, 0.0,
-
-		-0.3, -0.25, 0.0, 0.0, 0.0, 0.0,
-		-0.1, -0.25, 0.0, 0.0, 0.0, 0.0,
-
-		-0.2, -0.35, 0.0, 0.0, 0.0, 0.0,
-		-0.2, -0.15, 0.0, 0.0, 0.0, 0.0,
-
-		// telhado vermelho - 3 pontos
-		-0.75, 0.0, 0.0, 1.0, 0.0, 0.0,
-		0.0, 0.75, 0.0, 1.0, 0.0, 0.0,
-		0.75, 0.0, 0.0, 1.0, 0.0, 0.0,
-
-		// janela amarela - 6 pontos
-		-0.1, -0.35, 0.0, 1.0, 1.0, 0.0,
-		-0.1, -0.15, 0.0, 1.0, 1.0, 0.0,
-		-0.3, -0.35, 0.0, 1.0, 1.0, 0.0,
-
-		-0.1, -0.15, 0.0, 1.0, 1.0, 0.0,
-		-0.3, -0.35, 0.0, 1.0, 1.0, 0.0,
-		-0.3, -0.15, 0.0, 1.0, 1.0, 0.0,
-
-		// porta marrom - 6 pontos
-		0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
-		0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
-		-0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
-
-		-0.2, -1.0, 0.0, 0.55, 0.23, 0.0,
-		-0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
-		0.2, -0.5, 0.0, 0.55, 0.23, 0.0,
+		0.0, 1.0, 0.0, 
+		1.0, 0.0, 0.0, 
+		1.0, 1.0, 0.0, 
 	};
 
 	GLuint VBO, VAO;
@@ -226,11 +158,8 @@ int setupGeometry()
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
