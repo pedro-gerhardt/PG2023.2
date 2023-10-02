@@ -1,5 +1,7 @@
 # PG2023-2
-Repositório para Lista 1 da cadeira de Processamento Gráfico 23/2
+## Repositório das Listas do Grau A da cadeira de Processamento Gráfico 23/2
+
+### <b>Os exercícios estão divididos nas branches do repositório.</b>
 
 Respostas às perguntas iniciais da Lista 1:
 
