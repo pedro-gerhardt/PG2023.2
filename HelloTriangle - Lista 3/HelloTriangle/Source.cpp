@@ -70,7 +70,7 @@ int main()
 	GLuint VAO = setupGeometry();
 
 	glm::mat4 projection = glm::mat4(1); //matriz identidade
-	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+	projection = glm::ortho(0.0f, 600.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	shader.Use();
 	shader.setMat4("projection", glm::value_ptr(projection));
