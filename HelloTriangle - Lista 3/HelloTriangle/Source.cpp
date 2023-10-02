@@ -21,7 +21,7 @@ int setupGeometry();
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 800, HEIGHT = 600;
 glm::mat4 model = glm::mat4(1); //matriz identidade
-
+float velX = 0.0005, velY = 0.001;
 // Função MAIN
 int main()
 {
@@ -98,6 +98,11 @@ int main()
 
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 		shader.setMat4("model", glm::value_ptr(model));
+		model = glm::translate(model, glm::vec3(velX, velY, 0.0));
+		if (model[3].x < 100 || model[3].x > 700)
+			velX = velX * -1;
+		if (model[3].y > 525 || model[3].y < 75)
+			velY = velY * -1;
 
 		glDrawArrays(GL_TRIANGLES, 30, 15);
 		glDrawArrays(GL_LINES, 0, 30);
@@ -123,13 +128,29 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
+	{
 		model = glm::translate(model, glm::vec3(-1.0, 0.0, 0.0));
-	if ((key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) && action == GLFW_PRESS)
+		if (model[3].x < 100) 
+			model = glm::translate(model, glm::vec3(1.0, 0.0, 0.0));
+	}
+	if ((key == GLFW_KEY_RIGHT || key == GLFW_KEY_D) && action == GLFW_PRESS) 
+	{
 		model = glm::translate(model, glm::vec3(1.0, 0.0, 0.0));
+		if (model[3].x > 700)
+			model = glm::translate(model, glm::vec3(-1.0, 0.0, 0.0));
+	}
 	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
+	{
 		model = glm::translate(model, glm::vec3(0.0, 1.0, 0.0));
-	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
+		if (model[3].y > 525)
+			model = glm::translate(model, glm::vec3(0.0, -1.0, 0.0));
+	}
+	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS) 
+	{
 		model = glm::translate(model, glm::vec3(0.0, -1.0, 0.0));
+		if (model[3].y < 75)
+			model = glm::translate(model, glm::vec3(0.0, 1.0, 0.0));
+	}
 }
 
 int setupGeometry()
